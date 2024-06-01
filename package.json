@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.0",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/node": "^20.12.13",
+    "nodemon": "^3.1.2",
+    "ts-node": "^10.9.2"
+  },
+  "name": "no-gambling-back",
+  "description": "용산경찰과 함깨하는 청소년 도박 예방 사이트 프로젝트 백엔드",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec ts-node src/app.ts"
+  },
+  "author": "",
+  "license": "ISC"
+}
