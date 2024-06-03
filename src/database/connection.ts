@@ -2,7 +2,7 @@ import "dotenv/config";
 import mysql2 from "mysql2/promise";
 
 export class DB{
-    public Connect = async():Promise<any>=>{
+    private Connect = async():Promise<mysql2.Connection>=>{
         try {
             const connection = await mysql2.createConnection({
                 host: process.env.DB_HOST,
@@ -16,14 +16,14 @@ export class DB{
             }
     };
 
-    public executeQuery = async(query:string):Promise<any>=>{
+    public executeQuery = async(sql:string):Promise<mysql2.QueryResult>=>{
         try{
             const conn = await this.Connect();
-            const [results] = await conn.query(query);
+            const [results] = await conn.query(sql);
             conn.end();
             return results;
         }catch(error){
-            throw new Error(`Error at connection.ts.dbQuery(): ${error}`);
+            throw new Error(`Error at connection.ts executeQuery(): ${error}`);
         }
     };
 }
