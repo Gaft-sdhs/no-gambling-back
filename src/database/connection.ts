@@ -1,5 +1,5 @@
 import "dotenv/config";
-import mysql2 from "mysql2/promise";
+import mysql2, { OkPacketParams } from "mysql2/promise";
 
 export class DB{
     private Connect = async():Promise<mysql2.Connection>=>{
@@ -26,4 +26,18 @@ export class DB{
             throw new Error(`Error at connection.ts executeQuery(): ${error}`);
         }
     };
+
+    public executeQuery2 = async(sql:string):Promise<OkPacketParams>=>{
+        try{
+            const conn = await this.Connect();
+            const [results]:any = await conn.query(sql);
+            conn.end();
+            return results;
+        }catch(error){
+            throw new Error(`Error at connection.ts executeQuery(): ${error}`);
+        }
+    }
+
+
+    
 }
