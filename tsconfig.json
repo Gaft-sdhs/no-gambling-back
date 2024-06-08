@@ -8,8 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./node_modules/@types", "./path-to-your-types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["node", "express", "express-session"]
   },
-  "include": ["src/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
