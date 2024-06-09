@@ -10,9 +10,10 @@ export class userController extends userService{
     }
 
     public createNewUser = async(req:Request,res:Response):Promise<void>=>{
-        const {userName,password} = req.body;
+        const {userName,userPassword} = req.body;
+        
         try {
-            const result = await this.createUser(userName,password);
+            const result = await this.createUser(userName,userPassword);
             if(typeof(result) === 'string'){
                 res.status(400).json({"msg":result})
             }else{
@@ -40,15 +41,22 @@ export class userController extends userService{
         try {
           const { userName, userPassword } = req.body;
           const loginUser = await this.loginUser(userName, userPassword) as unknown as User;
+
           if (loginUser) {
             (req.session as any).user  = { userId: loginUser.user_id, uuId: loginUser.uuId,isLoggin:true };
             res.status(200).json({ "msg": "Login successful" });
           } else {
             res.status(401).json({ "msg": "Invalid credentials" });
           }
+          
         } catch (error) {
           console.error(error);
           res.status(500).json({ "msg": "Error while finding User" });
         }
+      }
+
+
+      public updateUserInfo = async(req:Request,res:Response): Promise<void>=>{
+
       }
 }
