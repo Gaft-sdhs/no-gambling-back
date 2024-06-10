@@ -11,6 +11,7 @@ export class userService {
         this.db = new DB();
     }
 
+    // finds user with userid
     public findUser = async (userid: string): Promise<boolean | string | QueryResult> => {
         if (userid.replace(" ", "") === "") return "Cannot Check empty id";
         const sql = `SELECT * FROM USER_TABLE WHERE USER_ID = '${userid}'`;
@@ -19,6 +20,7 @@ export class userService {
         // if the user does exist it will return true
     }
 
+    // finds user with uuid
     public findUser2 = async (uuId: string): Promise<boolean | string | QueryResult> => {
         if (uuId.replace(" ", "") === "") return "Cannot Check empty id";
         const sql = `SELECT * FROM USER_TABLE WHERE uuId = '${uuId}'`;
@@ -27,9 +29,21 @@ export class userService {
         // if the user does exist it will return true
     }
 
-    public updateUser = async (uuId: string, updateInfo: {}): Promise<string> => {
-        const userExist = await this.findUser2(uuId);
-        return "";
+    public updateUser = async (uuId: string, updateField:string,newValue:string): Promise<number | boolean> => {
+        const userExist = await this.findUser2(uuId) as unknown as User;
+
+        if(userExist){
+          const sql:string = `UPDATE USER_TABLE SET ${updateField} = ${newValue} WHERE uuId = ${userExist.uuId}`;
+
+          const result:OkPacketParams = await this.db.executeQuery2(sql);
+          
+          console.log(result.affectedRows);
+         
+          return result as number;
+        }else{
+            return false;
+        }
+
     }
 
     public createUser = async (userId: string, password: string): Promise<string | number> => {
@@ -78,7 +92,7 @@ export class userService {
         try {
             const findUser = await this.findUser(userId) as unknown as User;
             const checkPw = await bcrypt.compare(user_password,findUser.user_password);
-            
+
             if (findUser && checkPw) {
                 return findUser;
             } else {

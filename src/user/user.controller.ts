@@ -43,12 +43,13 @@ export class userController extends userService{
           const loginUser = await this.loginUser(userName, userPassword) as unknown as User;
 
           if (loginUser) {
-            (req.session as any).user  = { userId: loginUser.user_id, uuId: loginUser.uuId,isLoggin:true };
+              (req.session as any).user  = { userId: loginUser.user_id, uuId: loginUser.uuId,isLoggin:true };
+              console.log(req.session);
             res.status(200).json({ "msg": "Login successful" });
           } else {
             res.status(401).json({ "msg": "Invalid credentials" });
           }
-          
+
         } catch (error) {
           console.error(error);
           res.status(500).json({ "msg": "Error while finding User" });
@@ -57,6 +58,24 @@ export class userController extends userService{
 
 
       public updateUserInfo = async(req:Request,res:Response): Promise<void>=>{
+         const user_uuId = (req.session as any).user.uuId;
+         const {updateField,newValue} = req.body;
+        
+         try {
+            const updateUser = await this.updateUser(user_uuId,updateField,newValue);
 
+            if(updateUser === 1){
+                (req.session as any).destroy();
+                res.status(200).json({"msg":"success"});
+            }else{
+                res.status(400).json(updateUser);
+            }
+         } catch (error) {
+            console.error(error);
+            res.status(500).json({"msg":"Error while updating information"});
+         }
+         
+         
+        
       }
 }
