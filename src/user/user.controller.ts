@@ -2,6 +2,7 @@ import { userService } from "./user.Service";
 import { NextFunction, Request,Response } from "express";
 import {Middleware} from '../middleware/middleware'
 import { User } from "../interface/user";
+import { Session } from "express-session";
 export class userController extends userService{
     private middleWare:Middleware;
     constructor(){
@@ -40,10 +41,11 @@ export class userController extends userService{
     public login = async (req: Request, res: Response): Promise<void> => {
         try {
           const { userName, userPassword } = req.body;
-          const loginUser = await this.loginUser(userName, userPassword) as unknown as User;
+          const loginUser = await this.loginUser(userName, userPassword) as unknown as User | boolean;
 
-          if (loginUser) {
-              (req.session as any).user  = { userId: loginUser.user_id, uuId: loginUser.uuId,isLoggin:true };
+          if (loginUser !== false) {
+              (req.session as any).user  = { userId: (loginUser as User).user_id, uuId: (loginUser as User).uuId,isLoggin:true };
+              (req.session as Session).save();
               console.log(req.session);
             res.status(200).json({ "msg": "Login successful" });
           } else {
@@ -63,10 +65,10 @@ export class userController extends userService{
         
          try {
             const updateUser = await this.updateUser(user_uuId,updateField,newValue);
-
+            console.log(updateUser);
             if(updateUser === 1){
                 (req.session as any).destroy();
-                res.status(200).json({"msg":"success"});
+                res.status(200).json({"msg":"success please log in again"});
             }else{
                 res.status(400).json(updateUser);
             }
@@ -74,8 +76,5 @@ export class userController extends userService{
             console.error(error);
             res.status(500).json({"msg":"Error while updating information"});
          }
-         
-         
-        
       }
 }

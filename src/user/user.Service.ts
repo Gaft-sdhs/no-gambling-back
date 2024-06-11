@@ -33,13 +33,13 @@ export class userService {
         const userExist = await this.findUser2(uuId) as unknown as User;
 
         if(userExist){
-          const sql:string = `UPDATE USER_TABLE SET ${updateField} = ${newValue} WHERE uuId = ${userExist.uuId}`;
+          const sql:string = `UPDATE USER_TABLE SET ${updateField} = '${newValue}' WHERE uuId = '${userExist.uuId}'`;
 
           const result:OkPacketParams = await this.db.executeQuery2(sql);
           
           console.log(result.affectedRows);
          
-          return result as number;
+          return result.affectedRows as number;
         }else{
             return false;
         }
@@ -90,10 +90,11 @@ export class userService {
 
     public loginUser = async (userId: string, user_password: string): Promise<boolean | User> => {
         try {
-            const findUser = await this.findUser(userId) as unknown as User;
-            const checkPw = await bcrypt.compare(user_password,findUser.user_password);
+            const findUser = await this.findUser(userId) as unknown as User | boolean;
+            if((findUser as boolean) === false) return false;
 
-            if (findUser && checkPw) {
+            const checkPw = await bcrypt.compare(user_password,(findUser as User).user_password);
+            if (checkPw) {
                 return findUser;
             } else {
                 return false;
