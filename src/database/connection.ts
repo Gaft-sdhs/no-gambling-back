@@ -15,7 +15,8 @@ export class DB{
                throw new Error(`Error at connection.ts: ${error}`); 
             }
     };
-
+    
+    // returns a result with an array
     public executeQuery = async(sql:string):Promise<mysql2.QueryResult>=>{
         try{
             const conn = await this.Connect();
@@ -23,10 +24,11 @@ export class DB{
             conn.end();
             return results;
         }catch(error){
-            throw new Error(`Error at connection.ts executeQuery(): ${error}`);
+            throw new Error(`Error at executeQuery.ts executeQuery(): ${error}`);
         }
     };
 
+    // returns result of the executed query 
     public executeQuery2 = async(sql:string):Promise<OkPacketParams>=>{
         try{
             const conn = await this.Connect();
@@ -34,7 +36,7 @@ export class DB{
             conn.end();
             return results;
         }catch(error){
-            throw new Error(`Error at connection.ts executeQuery(): ${error}`);
+            throw new Error(`Error at executeQuery2.ts executeQuery(): ${error}`);
         }
     }
 
