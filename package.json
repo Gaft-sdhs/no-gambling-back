@@ -1,18 +1,23 @@
 {
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/express": "^4.17.21",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "faker": "^6.6.6",
     "mysql2": "^3.10.0",
     "typescript": "^5.4.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.5",
     "@types/express-session": "^1.18.0",
     "@types/node": "^20.12.13",
+    "@types/uuid": "^9.0.8",
     "nodemon": "^3.1.2",
     "ts-node": "^10.9.2"
   },
