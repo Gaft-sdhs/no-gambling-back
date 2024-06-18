@@ -9,6 +9,15 @@ export class postSerrvice{
     constructor(){
         this.db = new DB();
     }
+    public findPost = async():Promise<string>=>{
+        try{
+            
+            return "";
+        }catch(error){
+            throw new Error(`error at posts.service.ts findPost() ${error}`);
+
+        }
+    }
 
     public getAllPosts = async():Promise<mysql2.QueryResult>=>{
         try{
@@ -17,22 +26,35 @@ export class postSerrvice{
             
             return results as mysql2.QueryResult;
         }catch(error){
-            throw new Error(`error at getAllPosts() ${error}`);
+            throw new Error(`error at posts.service.ts getAllPosts() ${error}`);
         }
         
         
     }
 
-    public createPost = async(owner:string,content:string):Promise<string>=>{
-        const sql:string = `insert into posts_table (owner,content,upload_date,uuId) valuse(${owner},${content},sysdate(),${uuidv4()})`;
+    public createPost = async(owner:string,content:string):Promise<string | number>=>{
+        try{
+            const sql:string = `insert into posts_table (owner,content,upload_date,uuId) valuse(${owner},${content},sysdate(),${uuidv4()})`;
 
-        const results = this.db.executeQuery2(sql) as OkPacketParams;
-            
-        if(results.affectedRows == 1){
-
-        }
-
+            const results = this.db.executeQuery2(sql) as OkPacketParams;
+                
+            if(results.affectedRows == 1){
+                return results.affectedRows as number;
+            }
         return "";
+        }catch(error){
+            throw new Error(`error at posts.service.ts createPost(): ${error}`);
+        }        
+
+    }
+
+    public UpdatePost = async(value:string,new_content:string):Promise<string>=>{
+        try{
+            const 
+        }catch(error){
+            throw new Error(`error at posts.service.ts updatePost(): ${error}`);
+        }
+        return ""
     }
 
     
