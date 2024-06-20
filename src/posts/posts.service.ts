@@ -3,15 +3,16 @@ import { DB } from "../database/connection";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export class postSerrvice{
+export class postService{
     private db:DB;
     
     constructor(){
         this.db = new DB();
     }
-    public findPost = async():Promise<string>=>{
+    public findPost = async(title:string):Promise<string>=>{
         try{
-            
+            const sql = `select uuId from posts_table where title = '${title}'`;
+            const [results]:any = await this.db.executeQuery(sql);
             return "";
         }catch(error){
             throw new Error(`error at posts.service.ts findPost() ${error}`);
@@ -32,7 +33,7 @@ export class postSerrvice{
         
     }
 
-    public createPost = async(owner:string,content:string):Promise<string | number>=>{
+    public createPost = async(owner:string,content:string):Promise<boolean | number>=>{
         try{
             const sql:string = `insert into posts_table (owner,content,upload_date,uuId) valuse(${owner},${content},sysdate(),${uuidv4()})`;
 
@@ -41,21 +42,21 @@ export class postSerrvice{
             if(results.affectedRows == 1){
                 return results.affectedRows as number;
             }
-        return "";
+        return false;
         }catch(error){
             throw new Error(`error at posts.service.ts createPost(): ${error}`);
         }        
 
     }
 
-    public UpdatePost = async(value:string,new_content:string):Promise<string>=>{
-        try{
-            const 
-        }catch(error){
-            throw new Error(`error at posts.service.ts updatePost(): ${error}`);
-        }
-        return ""
-    }
+    // public UpdatePost = async(value:string,new_content:string):Promise<string>=>{
+    //     try{
+
+    //     }catch(error){
+    //         throw new Error(`error at posts.service.ts updatePost(): ${error}`);
+    //     }
+    //     return ""
+    // }
 
     
 }
